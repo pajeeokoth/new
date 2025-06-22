@@ -1,0 +1,22 @@
+<!doctype html>
+<head>
+    <title>Image Segmenation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<html>
+   <body>
+     <main>
+        <div class="px-4 py-3 my-2 text-center">
+            <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/car.jpg') }}" alt="Azure Logo" width="192" height="192"/>
+            <!-- <img  src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+            <h1 class="display-6 fw-bold text-primary">Sentiment Analysis</h1>            
+          </div>
+          <form action="/segment/" method="post">
+            <textarea name="image_to_segemnt" rows="4" cols="50"></textarea>
+            <br>
+            <input type="submit" value="Analyze">
+        </form>         
+     </main>      
+   </body>
+</html>
