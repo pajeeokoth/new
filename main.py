@@ -26,12 +26,20 @@ model = torch.nn.DataParallel(model)
 model.to(device)
 model.eval()
 
-# ##########
-# @app.route('/')
-# def index():
-#     print('Request for index page received')
-#     return render_template('index.html')
-# ##########
+
+# --- Optional: Serve a simple HTML page for uploading images ---
+############
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+
+app.mount("/static", StaticFiles(directory="."), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    with open("index.html") as f:
+        return f.read()
+
+############
 
 # --- Image Transformation ---
 transform = T.Compose([
@@ -41,6 +49,7 @@ transform = T.Compose([
 
 def overlay_mask_on_image(image: Image.Image, mask: Image.Image, alpha=0.3) -> Image.Image:
     mask = mask.convert("RGBA")
+    # image = image.resize((512, 512))
     image = image.convert("RGBA")
     blended = Image.blend(image, mask, alpha)
     return blended
