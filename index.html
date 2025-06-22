@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Segmentation</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <h1>Upload an Image</h1>
+  <form id="upload-form" enctype="multipart/form-data">
+    <input type="file" name="file" id="file">
+    <button type="submit">Submit</button>
+  </form>
+  <div id="spinner" style="display: none;">
+    <p>Processing...</p>
+    <img src="/static/spinner.gif" alt="Loading" width="50">
+  </div>
+  <h2>Segmented Image:</h2>
+  <div class="grid">
+    <div>
+      <h3>Original Image</h3>
+      <img id="original" style="max-width: 100%;">
+    </div>
+    <div>
+        <h3>Segmented Image</h3>
+        <img id="result" style="max-width: 100%;">
+    </div>
+  </div>
+  <script src="your_script.js" defer></script>
+  <script>
+    const form = document.getElementById('upload-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Get the file input
+      const file = fileInput.files[0];
+      const originalImg = document.getElementById('original');
+      originalImg.src = URL.createObjectURL(file);
+
+      // Prepare form data
+      const fileInput = document.getElementById('file');
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      // Show spinner
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('result').src = '';
+
+      const res = await fetch('/segment/', {
+        method: 'POST',
+        body: formData
+      });
+      const blob = await res.blob();
+      document.getElementById('result').src = URL.createObjectURL(blob);
+
+      // Hide spinner
+      document.getElementById('spinner').style.display = 'none';  
+
+    });
+  </script>
+</body>
+</html>
